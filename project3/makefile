@@ -12,4 +12,7 @@ $(OUTPUT_DIR)/%.class: $(SOURCE_DIR)/%.java
 	mkdir -p $(@D)
 	$(JAVAC -d $(OUTPUT_DIR) $<
 
+clean:
+	rm -rf $(OUTPUT_DIR)
+
 .PHONY

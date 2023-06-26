@@ -1,0 +1,97 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+public class xkcdpwgen {
+    public static void main(String[] args) {
+        File myObj = new File("src\\main\\resources\\words.txt");
+        ArrayList<String> fullWordList = new ArrayList<>();
+        ArrayList<String> symbolList = new ArrayList<>();
+        symbolList.add("~");
+        symbolList.add("!");
+        symbolList.add("@");
+        symbolList.add("#");
+        symbolList.add("$");
+        symbolList.add("%");
+        symbolList.add("^");
+        symbolList.add("&");
+        symbolList.add("*");
+        symbolList.add(".");
+        symbolList.add(":");
+        symbolList.add(";");
+
+        try {
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String word = myReader.nextLine();
+                fullWordList.add(word);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found.");
+        }
+
+        int words = 4;
+        int caps = 0;
+        int numbers = 0;
+        int symbols = 0;
+
+        if (args.length > 0) {
+            for (int i = 0; i < args.length; i += 2) {
+                if (args[i].equals("-w") || args[i].equals("--words")) {
+                    words = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("-c") || args[i].equals("--caps")) {
+                    caps = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("-n") || args[i].equals("--numbers")) {
+                    numbers = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("-s") || args[i].equals("--symbols")) {
+                    symbols = Integer.parseInt(args[i+1]);
+                } else {
+                    throw new IllegalArgumentException("Incorrect format.");
+                }
+            }
+        }
+
+        String finalPassword = "";
+        int tempCaps = 0;
+        int tempNumbers = 0;
+        int tempSymbols = 0;
+        Random r = new Random();
+
+        for (int i = 0; i < words; i++) {
+            int randomInteger = r.nextInt(fullWordList.size());
+            String tempWord = fullWordList.get(randomInteger);
+            if (tempCaps < caps) {
+                String capitalLetter = tempWord.substring(0, 1).toUpperCase();
+                String lowerCaseWord = tempWord.substring(1);
+                tempWord = capitalLetter + lowerCaseWord;
+                tempCaps++;
+            } if (tempNumbers < numbers) {
+                if (r.nextInt(2) == 0) {
+                    int randomNumber = r.nextInt(10);
+                    tempWord = randomNumber + tempWord;
+                    tempNumbers++;
+                } else {
+                    int randomNumber = r.nextInt(10);
+                    tempWord = tempWord + randomNumber;
+                    tempNumbers++;
+                }
+            } if (tempSymbols < symbols) {
+                if (r.nextInt(2) == 0) {
+                    int randomNumber = r.nextInt(symbolList.size());
+                    tempWord = symbolList.get(randomNumber) + tempWord;
+                    tempSymbols++;
+                } else {
+                    int randomNumber = r.nextInt(symbolList.size());
+                    tempWord += symbolList.get(randomNumber);
+                    tempSymbols++;
+                }
+            }
+
+            finalPassword += tempWord;
+        }
+
+        System.out.println(finalPassword);
+    }
+}

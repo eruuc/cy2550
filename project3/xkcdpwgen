@@ -1,6 +1,7 @@
 #!/bin/bash
 
-make all
+# Define the Java class code inline
+JAVA_CLASS="
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -99,3 +100,13 @@ public class xkcdpwgen {
         System.out.println(finalPassword);
     }
 }
+"
+
+# Compile and run the Java program
+echo "$JAVA_CLASS" > xkcdpwgen.java
+javac xkcdpwgen.java
+java xkcdpwgen "$@"
+
+# Clean up the generated files
+rm xkcdpwgen.java
+rm xkcdpwgen.class

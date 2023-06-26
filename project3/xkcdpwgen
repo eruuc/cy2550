@@ -18,6 +18,12 @@ fi
 # Run the Java program with command line arguments
 java xkcdpwgen "$@"
 
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
 public class xkcdpwgen {
     public static void main(String[] args) {
         URL path = xkcdpwgen.class.getResource("words.txt");

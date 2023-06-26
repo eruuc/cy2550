@@ -19,7 +19,7 @@ fi
 java xkcdpwgen "$@"
 
 public class xkcdpwgen {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         File myObj = new File("cy2550\\project3\\words.txt");
         ArrayList<String> fullWordList = new ArrayList<>();
         ArrayList<String> symbolList = new ArrayList<>();
@@ -36,14 +36,10 @@ public class xkcdpwgen {
         symbolList.add(":");
         symbolList.add(";");
 
-        try {
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String word = myReader.nextLine();
-                fullWordList.add(word);
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found.");
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine()) {
+            String word = myReader.nextLine();
+            fullWordList.add(word);
         }
 
         int words = 4;
